@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">DicodingStoryApp</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Mau mencurahkan isi hati? Di Dicoding Story App aja!</string>
+    <string name="title_welcome_page">Selamat datang di Dicoding Story App!</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="title_login_page">Sudah siap untuk menambahkan story?</string>
+    <string name="name">Nama</string>
+    <string name="logout">Keluar</string>
+    <string name="ini_gambar">ini gambar</string>
+    <string name="ini_nama">Ini Nama</string>
+    <string name="ini_deskripsi">ini deskripsi</string>
+    <string name="preview_image">Preview Image</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="description">Description</string>
+    <string name="submit">Submit</string>
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_invalid_email">Invalid email format</string>
+    <string name="add_story">Add Story</string>
+    <string name="story">Story</string>
+    <string name="no_stories_available">No stories available</string>
+    <string name="dicoding_story">Dicoding Story</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="profile_picture">profile_picture</string>
+    <string name="profile">Profile</string>
+    <string name="no_name_available">No Name Available</string>
+    <string name="no_email_available">No Email Available</string>
+</resources>
