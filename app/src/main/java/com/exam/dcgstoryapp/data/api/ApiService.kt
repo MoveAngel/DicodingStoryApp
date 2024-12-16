@@ -31,7 +31,6 @@ interface ApiService {
         @Part photo: MultipartBody.Part,
         @Part("description") description: RequestBody
     ): Response<Story>
-    fun getStories(@Header("Authorization") token: String): Call<List<Story>>
 
     @GET("login")
     suspend fun getUserProfile(@Header("Authorization") token: String): Response<UserProfile>

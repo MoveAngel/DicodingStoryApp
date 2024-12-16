@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.exam.dcgstoryapp.R
 import com.exam.dcgstoryapp.data.LoginRequest
 import com.exam.dcgstoryapp.data.LoginResponse
 import com.exam.dcgstoryapp.data.api.ApiConfig
@@ -65,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
 
             if (email.isEmpty() || password.isEmpty()) {
-                showToast("Email and password cannot be empty")
+                showToast(getString(R.string.error_email_password_empty))
                 return@setOnClickListener
             }
 
@@ -114,10 +115,8 @@ class LoginActivity : AppCompatActivity() {
                     if (loginResult != null && !loginResult.error) {
                         val sharedPref = getSharedPreferences("session", Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
-                        val token = "Bearer ${loginResult.token}"
-                        val name = loginResult.name
-                        editor.putString("token", token)
-                        editor.putString("name", name)
+                        editor.putString("token", loginResult.token)
+                        editor.putString("name", loginResult.name)
                         editor.putString("email", email)
                         editor.apply()
 
@@ -134,11 +133,9 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        Log.e("LoginActivity", "Login failed: ${loginResult?.message}")
                         showToast(loginResult?.message ?: "Login failed")
                     }
                 } else {
-                    Log.e("LoginActivity", "API Error: ${response.message()}")
                     showToast("Login failed: ${response.message()}")
                 }
             }

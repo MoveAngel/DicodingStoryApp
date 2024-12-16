@@ -8,8 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
@@ -17,7 +15,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.exam.dcgstoryapp.data.RegisterRequest
 import com.exam.dcgstoryapp.data.RegisterResponse
 import com.exam.dcgstoryapp.data.api.ApiConfig
@@ -67,37 +64,9 @@ class SignupActivity : AppCompatActivity() {
                 showToast("All fields are required")
                 return@setOnClickListener
             }
-
             performRegistration(name, email, password)
         }
-
-        binding.passwordEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val context = this@SignupActivity
-
-                if (s != null && s.length < 8) {
-                    binding.passwordEditTextLayout.error = "Password must be at least 8 characters"
-                    binding.passwordEditTextLayout.setErrorTextColor(
-                        ContextCompat.getColorStateList(context, android.R.color.holo_red_dark)
-                    )
-                    binding.signupButton.isEnabled = false
-                }
-                else if (s != null && s.length >= 8) {
-                    binding.passwordEditTextLayout.error = null
-                    binding.signupButton.isEnabled = true
-                } else {
-                    binding.passwordEditTextLayout.error = null
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
     }
-
 
     @SuppressLint("Recycle")
     private fun playAnimation() {

@@ -12,6 +12,10 @@ import com.exam.dcgstoryapp.view.main.MainActivity
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
+    companion object {
+        private const val SPLASH_SCREEN_DELAY = 2000L
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -21,6 +25,6 @@ class SplashActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 2000)
+        }, SPLASH_SCREEN_DELAY)
     }
 }

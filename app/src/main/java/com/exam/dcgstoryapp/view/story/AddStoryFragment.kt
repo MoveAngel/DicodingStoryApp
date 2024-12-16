@@ -19,6 +19,8 @@ import java.io.File
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Environment
 import android.util.Log
@@ -38,13 +40,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.json.JSONObject
+import java.io.FileOutputStream
 
 class AddStoryFragment : Fragment() {
-    private lateinit var binding: FragmentAddStoryBinding
+    private var _binding: FragmentAddStoryBinding? = null
+    private val binding get() = _binding!!
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var apiService: ApiService
 
     private var selectedUri: Uri? = null
+    private var temporaryUri: Uri? = null
     private var currentToken: String = ""
 
     private val requestPermissionLauncher =
@@ -66,8 +71,8 @@ class AddStoryFragment : Fragment() {
                 val selectedImageUri = result.data?.data
                 if (selectedImageUri != null) {
                     selectedUri = selectedImageUri
-                    binding.imageViewPreview.setImageURI(selectedImageUri)
-                    binding.buttonSubmit.isEnabled = true
+                    temporaryUri = selectedUri
+                    updateImagePreview(selectedUri!!)
                 } else {
                     Toast.makeText(requireContext(), "No image selected", Toast.LENGTH_SHORT).show()
                 }
@@ -80,10 +85,15 @@ class AddStoryFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess ->
             if (isSuccess && cameraImageUri != null) {
                 selectedUri = cameraImageUri
+                temporaryUri = selectedUri
                 updateImagePreview(cameraImageUri!!)
             } else {
-                Toast.makeText(requireContext(), "Image capture was canceled", Toast.LENGTH_SHORT).show()
-                binding.buttonSubmit.isEnabled = false
+                if (temporaryUri != null) {
+                    selectedUri = temporaryUri
+                    updateImagePreview(temporaryUri!!)
+                } else {
+                    Toast.makeText(requireContext(), "Image capture was canceled", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -100,7 +110,7 @@ class AddStoryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAddStoryBinding.inflate(inflater, container, false)
+        _binding = FragmentAddStoryBinding.inflate(inflater, container, false)
 
         apiService = ApiConfig.getApiService()
 
@@ -299,12 +309,34 @@ class AddStoryFragment : Fragment() {
         val contentResolver = requireContext().contentResolver
         val inputStream = contentResolver.openInputStream(selectedUri!!)
 
-        val file = File(requireContext().cacheDir, "uploaded_image.jpg")
-        file.outputStream().use {
+        val tempFile = File(requireContext().cacheDir, "original_image.jpg")
+        tempFile.outputStream().use {
             inputStream?.copyTo(it)
         }
 
-        return file
+        return compressImageFile(tempFile)
+    }
+
+    private fun compressImageFile(file: File): File {
+        val bitmap = BitmapFactory.decodeFile(file.path)
+
+        val compressedFile = File(requireContext().cacheDir, "compressed_image.jpg")
+
+        var quality = 100
+        do {
+            val outputStream = FileOutputStream(compressedFile)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            outputStream.flush()
+            outputStream.close()
+
+            if (compressedFile.length() > 1_000_000) {
+                quality -= 10
+            } else {
+                break
+            }
+        } while (quality > 0)
+
+        return compressedFile
     }
 
     private fun createPhotoMultipart(file: File): MultipartBody.Part {
@@ -374,5 +406,10 @@ class AddStoryFragment : Fragment() {
         } catch (e: Exception) {
             "An error occurred"
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

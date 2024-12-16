@@ -29,4 +29,7 @@
     <string name="profile">Profile</string>
     <string name="no_name_available">No Name Available</string>
     <string name="no_email_available">No Email Available</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="error_email_password_empty">Email and password cannot be empty</string>
+    <string name="error_password_too_short">Password must be at least 8 characters</string>
 </resources>

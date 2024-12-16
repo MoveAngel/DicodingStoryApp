@@ -2,6 +2,8 @@ package com.exam.dcgstoryapp.view.story
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,7 @@ class ListStoryFragment : Fragment() {
 
     private lateinit var binding: FragmentListStoryBinding
     private lateinit var adapter: StoryAdapter
+    private var backPressedOnce = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -31,10 +34,17 @@ class ListStoryFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                Toast.makeText(requireContext(), "Press again to exit", Toast.LENGTH_SHORT).show()
-                requireActivity().finish()
+                if (backPressedOnce) {
+                    requireActivity().finish()
+                } else {
+                    backPressedOnce = true
+                    Toast.makeText(requireContext(), "Press again to exit", Toast.LENGTH_SHORT).show()
+                    Handler(Looper.getMainLooper()).postDelayed({ backPressedOnce = false }, 2000)
+                }
             }
         })
 
@@ -44,9 +54,8 @@ class ListStoryFragment : Fragment() {
 
     private fun fetchStories() {
         showLoading(true)
-        val preferences = requireContext().getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        val preferences = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE)
         val token = preferences.getString("token", null)
-
 
         if (token.isNullOrBlank()) {
             Toast.makeText(requireContext(), "Authentication token is missing", Toast.LENGTH_SHORT).show()
@@ -57,7 +66,7 @@ class ListStoryFragment : Fragment() {
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("https://story-api.dicoding.dev/v1/stories")
-            .addHeader("Authorization", token)
+            .addHeader("Authorization",  "Bearer $token")
             .build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {

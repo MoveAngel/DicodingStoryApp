@@ -3,9 +3,11 @@ package com.exam.dcgstoryapp.view.story
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
@@ -44,11 +46,7 @@ class StoryDetailFragment : Fragment() {
             storyTitleTextView.transitionName = "story_title_$storyId"
             storyDescriptionTextView.transitionName = "story_description_$storyId"
 
-            Glide.with(requireContext())
-                .load(storyPhotoUrl)
-                .error(R.drawable.ic_broken_image)
-                .placeholder(R.drawable.ic_loading_image)
-                .into(storyImageView)
+            storyImageView.loadImage(storyPhotoUrl)
         }
 
         return binding.root
@@ -56,18 +54,21 @@ class StoryDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         checkAuthenticationStatus()
     }
 
     private fun checkAuthenticationStatus() {
-        val preferences = requireContext().getSharedPreferences("MyApp", Context.MODE_PRIVATE)
+        val preferences = requireContext().getSharedPreferences("session", Context.MODE_PRIVATE)
         val token = preferences.getString("token", null)
 
         if (token.isNullOrBlank()) {
+            Log.e("AuthCheck", "Token is missing, redirecting to WelcomeActivity")
             redirectToWelcomeActivity()
+        } else {
+            Log.d("AuthCheck", "Token is valid!")
         }
     }
+
 
     private fun redirectToWelcomeActivity() {
         val intent = Intent(requireContext(), WelcomeActivity::class.java).apply {
@@ -77,7 +78,21 @@ class StoryDetailFragment : Fragment() {
         requireActivity().finish()
     }
 
+    private fun ImageView.loadImage(url: String) {
+        Glide.with(this.context)
+            .load(url)
+            .centerCrop()
+            .error(R.drawable.ic_broken_image)
+            .placeholder(R.drawable.ic_loading_image)
+            .into(this)
+    }
+
     companion object {
+        private const val STORY_ID = "STORY_ID"
+        private const val STORY_NAME = "STORY_NAME"
+        private const val STORY_DESCRIPTION = "STORY_DESCRIPTION"
+        private const val STORY_PHOTO_URL = "STORY_PHOTO_URL"
+
         fun newInstance(
             storyId: String,
             storyName: String,
@@ -86,10 +101,10 @@ class StoryDetailFragment : Fragment() {
         ): StoryDetailFragment {
             return StoryDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString("STORY_ID", storyId)
-                    putString("STORY_NAME", storyName)
-                    putString("STORY_DESCRIPTION", storyDescription)
-                    putString("STORY_PHOTO_URL", storyPhotoUrl)
+                    putString(STORY_ID, storyId)
+                    putString(STORY_NAME, storyName)
+                    putString(STORY_DESCRIPTION, storyDescription)
+                    putString(STORY_PHOTO_URL, storyPhotoUrl)
                 }
             }
         }
