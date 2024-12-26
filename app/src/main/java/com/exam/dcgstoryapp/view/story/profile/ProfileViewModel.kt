@@ -1,4 +1,4 @@
-package com.exam.dcgstoryapp.view.profile
+package com.exam.dcgstoryapp.view.story.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

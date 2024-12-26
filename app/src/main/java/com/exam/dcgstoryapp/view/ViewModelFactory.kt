@@ -7,7 +7,7 @@ import com.exam.dcgstoryapp.data.UserRepository
 import com.exam.dcgstoryapp.di.Injection
 import com.exam.dcgstoryapp.view.login.LoginViewModel
 import com.exam.dcgstoryapp.view.main.MainViewModel
-import com.exam.dcgstoryapp.view.profile.ProfileViewModel
+import com.exam.dcgstoryapp.view.story.profile.ProfileViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 

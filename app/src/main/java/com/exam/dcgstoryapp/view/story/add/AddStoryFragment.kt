@@ -1,4 +1,4 @@
-package com.exam.dcgstoryapp.view.story
+package com.exam.dcgstoryapp.view.story.add
 
 import android.Manifest
 import android.net.Uri
@@ -36,6 +36,7 @@ import com.exam.dcgstoryapp.view.ViewModelFactory
 import com.exam.dcgstoryapp.view.login.LoginActivity
 import com.exam.dcgstoryapp.view.login.LoginViewModel
 import com.exam.dcgstoryapp.view.main.MainActivity
+import com.exam.dcgstoryapp.view.story.list.ListStoryFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody

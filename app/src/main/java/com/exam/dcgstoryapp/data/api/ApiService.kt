@@ -4,6 +4,8 @@ import com.exam.dcgstoryapp.data.LoginRequest
 import com.exam.dcgstoryapp.data.LoginResponse
 import com.exam.dcgstoryapp.data.RegisterRequest
 import com.exam.dcgstoryapp.data.RegisterResponse
+import com.exam.dcgstoryapp.data.pref.ListStoryResponse
+import com.exam.dcgstoryapp.data.pref.StoriesResponse
 import com.exam.dcgstoryapp.data.pref.Story
 import com.exam.dcgstoryapp.data.pref.UserProfile
 import okhttp3.MultipartBody
@@ -16,6 +18,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("register")
@@ -32,7 +35,16 @@ interface ApiService {
         @Part("description") description: RequestBody
     ): Response<Story>
 
+    @GET("stories")
+    suspend fun getStories(
+        @Header("Authorization") token: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<StoriesResponse>
+
+    @GET("stories?location=1")
+    suspend fun getStoriesWithLocation(@Header("Authorization") token: String): Response<ListStoryResponse>
+
     @GET("login")
     suspend fun getUserProfile(@Header("Authorization") token: String): Response<UserProfile>
-
 }

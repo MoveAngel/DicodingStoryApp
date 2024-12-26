@@ -1,4 +1,4 @@
-package com.exam.dcgstoryapp.view.profile
+package com.exam.dcgstoryapp.view.story.profile
 
 import android.content.Context
 import android.content.Intent

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -33,6 +35,16 @@
                 android:padding="16dp"
                 android:clipToPadding="false"
                 android:scrollbars="vertical" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabMaps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/ini_deskripsi_fab"
+                app:srcCompat="@drawable/ic_map"
+                app:layout_anchor="@id/recyclerView"
+                android:layout_gravity="bottom|end"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -50,6 +62,23 @@
                 android:text="@string/no_stories_available"
                 android:textSize="16sp"
                 android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/errorMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textColor="?android:textColorPrimary"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/retryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/retry"
+                android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

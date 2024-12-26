@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import com.exam.dcgstoryapp.R
 import com.exam.dcgstoryapp.databinding.ActivityMainBinding
 import com.exam.dcgstoryapp.view.ViewModelFactory
-import com.exam.dcgstoryapp.view.profile.ProfileFragment
-import com.exam.dcgstoryapp.view.story.AddStoryFragment
-import com.exam.dcgstoryapp.view.story.ListStoryFragment
+import com.exam.dcgstoryapp.view.story.profile.ProfileFragment
+import com.exam.dcgstoryapp.view.story.add.AddStoryFragment
+import com.exam.dcgstoryapp.view.story.list.ListStoryFragment
 import com.exam.dcgstoryapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {

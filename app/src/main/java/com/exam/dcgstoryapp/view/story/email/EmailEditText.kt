@@ -1,14 +1,14 @@
-package com.exam.dcgstoryapp.view.pass
+package com.exam.dcgstoryapp.view.story.email
 
 import android.content.Context
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.exam.dcgstoryapp.R
+import android.util.Patterns
 
-class PasswordEditText : AppCompatEditText {
+class EmailEditText : AppCompatEditText {
 
     constructor(context: Context) : super(context) {
         init()
@@ -23,23 +23,22 @@ class PasswordEditText : AppCompatEditText {
     }
 
     private fun init() {
-        inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validatePassword(s)
+                validateEmail(s)
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun validatePassword(input: CharSequence?) {
+    private fun validateEmail(input: CharSequence?) {
         error = if (input.isNullOrEmpty()) {
-            context.getString(R.string.error_password_empty)
-        } else if (input.length < 8) {
-            context.getString(R.string.error_password_too_short)
+            context.getString(R.string.error_email_empty)
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(input).matches()) {
+            context.getString(R.string.error_invalid_email)
         } else {
             null
         }
